@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabe Mobile Auto – Corporate Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root{
+    /* Corporate Palette */
+    --primary: #1E3A8A;       /* Corporate Blue */
+    --primary-bg: #EFF6FF;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    
+    /* Strict Neutrals */
+    --bg: #F8FAFC;            /* Main Background */
+    --card: #FFFFFF;
+    --text: #0F172A;          /* Main Text */
+    --text-muted: #64748B;
+    --border: #E2E8F0;
+
+    --radius-full: 16px;
+    --radius-sm: 8px;
+    
+    --shadow-main: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+
+body{
+    background:#0F172A; 
+    display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden;
+}
+
+.phone{
+    width:375px; height:812px; background:var(--bg); border-radius:40px; overflow:hidden;
+    box-shadow:0 0 0 10px #1e293b, 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display:flex; flex-direction:column; position: relative; border: 1px solid #334155;
+}
+
+/* SCREEN MANAGEMENT */
+.screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    overflow-y: auto; background: var(--bg); display: none; flex-direction: column;
+}
+.screen.active { display: flex; }
+
+/* TYPOGRAPHY */
+h1, h2, h3, h4 { color: var(--text); letter-spacing: -0.015em; }
+p { color: var(--text-muted); font-size: 0.875rem; line-height: 1.5; }
+
+/* COMPONENT: HEADER */
+.header-clean {
+    background: var(--card); padding: 3rem 1.5rem 1rem 1.5rem;
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+}
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.header-title { font-size: 1.125rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+.header-subtitle { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+/* COMPONENT: CARDS */
+.card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-full);
+    padding: 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-main);
+}
+.content-area { padding: 1.5rem; }
+
+/* BUTTONS */
+.btn-primary {
+    background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; width: 100%;
+    display: flex; justify-content: center; align-items: center; gap: 8px;
+}
+.btn-outline {
+    background: transparent; border: 1px solid var(--border); color: var(--text); padding: 0.75rem;
+    border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; width: 100%;
+    display: flex; justify-content: center; align-items: center; gap: 8px; position: relative;
+}
+
+/* TECHNICIAN SPECIFIC */
+.tech-profile { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 1.5rem; }
+.tech-avatar { width: 64px; height: 64px; background: #CBD5E1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #64748B; font-size: 1.5rem; }
+.clock-card {
+    background: white; border-radius: 20px; overflow: hidden; display: flex;
+    box-shadow: var(--shadow-lg); margin-bottom: 1.5rem; position: relative; border: 1px solid var(--border);
+}
+.clock-left { padding: 1.5rem; flex: 1; }
+.clock-right { 
+    width: 110px; background: #EFF6FF; position: relative; 
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    padding: 1rem;
+}
+/* Curve effect simulation */
+.clock-right::before {
+    content: ''; position: absolute; top: 0; left: -20px; width: 20px; height: 100%;
+    background: #EFF6FF; border-top-left-radius: 20px; border-bottom-left-radius: 20px;
+    z-index: 0; box-shadow: -4px 0 0 white; /* Masking hack */
+}
+
+/* HR TABS */
+.hr-tabs {
+    display: flex; overflow-x: auto; padding: 0 1rem; background: var(--card); border-bottom: 1px solid var(--border);
+}
+.hr-tab {
+    padding: 1rem; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap;
+    border-bottom: 2px solid transparent;
+}
+.hr-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+.status-badge {
+    font-size: 0.7rem; padding: 2px 8px; border-radius: 99px; font-weight: 700;
+}
+.bg-green-100 { background: #DCFCE7; color: #166534; }
+.bg-red-100 { background: #FEE2E2; color: #991B1B; }
+.bg-orange-100 { background: #FFEDD5; color: #9A3412; }
+
+/* NAV BAR */
+.nav-bar {
+    height: 70px; background: var(--card); border-top: 1px solid var(--border);
+    display: flex; justify-content: space-around; align-items: center;
+    position: absolute; bottom: 0; width: 100%; z-index: 20;
+}
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.7rem; color: var(--text-muted); cursor: pointer; }
+.nav-item.active { color: var(--primary); font-weight: 600; }
+
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+    <!-- LOGIN SCREEN (SSO) -->
+    <div id="login" class="screen active">
+        <div style="padding: 2rem; display: flex; flex-direction: column; height: 100%;">
+            <!-- Header -->
+            <div style="padding-top: 1rem; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                 <i class="fas fa-th-large" style="color: var(--primary);"></i>
+                 <span style="font-weight: 800; font-size: 1.1rem; color: var(--text);">YOUR LOGO</span>
+            </div>
+
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+                <h1 style="color: var(--primary); font-size: 1.75rem; line-height: 1.2; margin-bottom: 0.5rem;">Workshop<br>Management System</h1>
+                <p>Secure access for staff and administrators</p>
+
+                <div style="margin-top: 3rem; background: white; padding: 1.5rem; border-radius: 16px; box-shadow: var(--shadow-lg);">
+                    <h3 style="margin-bottom: 1.5rem;">Sign in with Google</h3>
+                    <div class="btn-outline" onclick="showDemoMenu()">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20" alt="G">
+                        Continue with Google
+                    </div>
+                    <p style="font-size: 0.75rem; margin-top: 1rem; color: var(--text-muted);">Your role will determine your dashboard access</p>
+                </div>
+                
+                <!-- Demo Links (Hidden triggering via main btn for demo) -->
+                <div id="demo-menu" style="display: none; margin-top: 1rem; background: #f1f5f9; padding: 1rem; border-radius: 8px;">
+                    <p style="margin-bottom: 0.5rem; font-weight: bold;">[DEMO] Select Role:</p>
+                    <button onclick="nav('admin')" style="display:block; width:100%; margin:4px 0; padding:8px;">Admin/Owner</button>
+                    <button onclick="nav('tech')" style="display:block; width:100%; margin:4px 0; padding:8px;">Technician</button>
+                    <button onclick="nav('hr')" style="display:block; width:100%; margin:4px 0; padding:8px;">HR Manager</button>
+                    <button onclick="nav('customer')" style="display:block; width:100%; margin:4px 0; padding:8px;">Customer</button>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 0.75rem; opacity: 0.5;">Powered by GMA Systems</p>
+        </div>
+    </div>
+
+    <!-- TECHNICIAN SCREEN -->
+    <div id="tech" class="screen">
+        <div class="header-clean">
+            <div class="header-top">
+                <div class="header-title"><i class="fas fa-th-large" style="color: var(--primary);"></i> YOUR LOGO</div>
+                <i class="far fa-bell" style="color: var(--text-muted);"></i>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- Profile -->
+            <div class="tech-profile">
+                <div class="tech-avatar"><i class="fas fa-user"></i></div>
+                <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h2 style="font-size: 1.25rem;">Gabe Johnson</h2>
+                        <span class="status-badge bg-green-100">Clocked In</span>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Technician</p>
+                    <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);">
+                        <div>
+                            <div>Employee No: 1024</div>
+                            <div style="font-weight: 700; color: var(--text);">$20/hr</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div>ID: 880921....</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clock Card -->
+            <div class="clock-card">
+                <div class="clock-left">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Clocked In Since</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--text); margin: 4px 0;">8:00 AM</div>
+                    <div style="background: #F1F5F9; border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; display: inline-block;">Total Hours: 3 hrs 25m</div>
+                </div>
+                <div class="clock-right" style="background: #DBEAFE;">
+                    <div style="font-size: 1.25rem; font-weight: 800; color: var(--primary);">$60</div>
+                    <div style="font-size: 0.65rem; color: var(--primary); font-weight: 600;">Before tax</div>
+                </div>
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; text-align: center; border-top: 1px solid #EEF2FF;">
+                    <a href="#" style="font-size: 0.75rem; color: var(--primary); text-decoration: none; font-weight: 600;">View Payslip</a>
+                </div>
+            </div>
+
+            <!-- Leave Section -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h4 style="font-size: 0.9rem;">Apply for leave</h4>
+                    <i class="fas fa-chevron-right" style="font-size: 0.8rem; color: var(--text-muted);"></i>
+                </div>
+                <div class="card" style="display: flex; gap: 12px; align-items: center;">
+                    <div style="background: #F1F5F9; padding: 8px 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-weight: 800; font-size: 1rem;">10</div>
+                        <div style="font-size: 0.6rem; font-weight: 700;">MAY</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h5 style="font-size: 0.9rem;">Leave Application</h5>
+                        <p style="font-size: 0.75rem;">May 10 - May 12, 2024</p>
+                    </div>
+                    <button style="background: var(--primary); color: white; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer;"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+
+            <!-- Current Task -->
+            <h4 style="font-size: 0.9rem; margin-bottom: 8px;">Current Task</h4>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <h4 style="font-size: 1rem;">Audi A4 Repair</h4>
+                    <span class="status-badge bg-orange-100">In Progress</span>
+                </div>
+                <div style="display: flex; gap: 16px; font-size: 0.75rem; color: var(--text-muted);">
+                    <span><i class="far fa-clock"></i> Due: May 5</span>
+                    <span><i class="fas fa-tools"></i> Engine</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-bar">
+            <div class="nav-item active"><i class="fas fa-home"></i> Home</div>
+            <div class="nav-item"><i class="fas fa-tools"></i> Jobs</div>
+            <div class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Payroll</div>
+            <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+        </div>
+    </div>
+
+    <!-- HR DASHBOARD -->
+    <div id="hr" class="screen">
+        <div class="header-clean" style="padding-bottom: 0;">
+            <div class="header-top">
+                <div class="header-title" id="hr-header-title"><i class="fas fa-th-large" style="color: var(--primary);"></i> YOUR LOGO</div>
+                <div style="display: flex; gap: 12px;">
+                    <i class="far fa-bell" style="color: var(--text-muted);"></i>
+                    <i class="fas fa-sign-out-alt" style="color: var(--text-muted);" onclick="nav('login')"></i>
+                </div>
+            </div>
+            <!-- Tabs -->
+            <div class="hr-tabs" style="margin-top: 1rem; margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem;">
+                <div class="hr-tab active" onclick="switchHrTab('attendance', this)">Attendance</div>
+                <div class="hr-tab" onclick="switchHrTab('leave', this)">Leave</div>
+                <div class="hr-tab" onclick="switchHrTab('payroll', this)">Payroll</div>
+                <div class="hr-tab" onclick="switchHrTab('employees', this)">Employees</div>
+            </div>
+        </div>
+
+        <!-- HR CONTENT: ATTENDANCE -->
+        <div id="hr-attendance" class="hr-content content-area" style="display: block;">
+            <div style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
+                <div class="card" style="flex:1; text-align: center; padding: 1rem 0.5rem; margin-bottom: 0;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 4px;">26</h2>
+                    <p style="font-size: 0.7rem;">Total</p>
+                </div>
+                <div class="card" style="flex:1; text-align: center; padding: 1rem 0.5rem; margin-bottom: 0;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 4px; color: var(--success);">19</h2>
+                    <p style="font-size: 0.7rem;">Present</p>
+                </div>
+                <div class="card" style="flex:1; text-align: center; padding: 1rem 0.5rem; margin-bottom: 0;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 4px; color: var(--warning);">3</h2>
+                    <p style="font-size: 0.7rem;">Leave</p>
+                </div>
+                <div class="card" style="flex:1; text-align: center; padding: 1rem 0.5rem; margin-bottom: 0;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 4px; color: var(--danger);">2</h2>
+                    <p style="font-size: 0.7rem;">Late</p>
+                </div>
+            </div>
+
+            <!-- List -->
+            <div class="card">
+                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                    <div style="width: 48px; height: 48px; background: #E2E8F0; border-radius: 50%;"></div>
+                    <div style="flex: 1;">
+                        <h4>John Davis</h4>
+                        <p style="font-size: 0.75rem;">ID: 1023 • R100/hr</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="status-badge bg-green-100">Present</span>
+                        <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">6 hrs 55m</div>
+                    </div>
+                </div>
+                <div style="height: 1px; background: var(--border); margin: 8px 0;"></div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div style="width: 48px; height: 48px; background: #E2E8F0; border-radius: 50%;"></div>
+                    <div style="flex: 1;">
+                        <h4>Lisa Parker</h4>
+                        <p style="font-size: 0.75rem;">ID: 1021 • R110/hr</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="status-badge bg-red-100">Absent</span>
+                        <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">No Check-in</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HR CONTENT: LEAVE -->
+        <div id="hr-leave" class="hr-content content-area" style="display: none;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <h4>Pending Requests <span style="background: #F1F5F9; padding: 2px 6px; border-radius: 12px; font-size: 0.7rem;">2</span></h4>
+            </div>
+             <div class="card">
+                 <div style="display: flex; gap: 12px; align-items: flex-start;">
+                     <div style="width: 40px; height: 40px; background: #E2E8F0; border-radius: 50%;"></div>
+                     <div style="flex: 1;">
+                         <h4>Adam Reed</h4>
+                         <p style="font-size: 0.75rem; margin-bottom: 4px;">Time-Off Request</p>
+                         <div style="font-weight: 600; font-size: 0.8rem;">May 15 - May 17</div>
+                         <p style="font-size: 0.7rem; margin-top: 4px;">Reason: Family responsibility</p>
+                         <div style="display: flex; gap: 8px; margin-top: 12px;">
+                             <button style="flex: 1; background: var(--success); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem;">Approve</button>
+                             <button style="flex: 1; background: var(--danger); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem;">Reject</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+
+        <div id="hr-payroll" class="hr-content content-area" style="display: none;">
+             <input type="text" placeholder="Search employee..." style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem;">
+             <div class="card">
+                 <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                     <h3>Adam Reed</h3>
+                     <span style="font-size: 0.8rem; color: var(--text-muted);">Technician</span>
+                 </div>
+                 <div style="font-size: 0.9rem; display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Pay Rate</span> <span>R120/hr</span></div>
+                 <div style="font-size: 0.9rem; display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Regular Hours</span> <span>45 hrs</span></div>
+                 <div style="font-size: 0.9rem; display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Overtime</span> <span>3 hrs</span></div>
+                 <div style="height: 1px; background: #E2E8F0; margin: 8px 0;"></div>
+                 <div style="font-size: 1rem; font-weight: 700; display: flex; justify-content: space-between; margin-bottom: 12px;"><span>Net Pay</span> <span>R5,550</span></div>
+                 <button class="btn-primary" style="background: #3F51B5;">Generate Payslip</button>
+             </div>
+        </div>
+        
+        <div id="hr-employees" class="hr-content content-area" style="display: none;">
+             <input type="text" placeholder="Search employee..." style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem;">
+             <div class="card">
+                 <div style="display: flex; gap: 12px;">
+                     <div style="width: 50px; height: 50px; background: #CBD5E1; border-radius: 8px;"></div>
+                     <div>
+                         <h3>Adam Reed</h3>
+                         <p>Technician</p>
+                     </div>
+                 </div>
+                 <div style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin: 12px 0;">
+                     <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;"><span>Employee No</span> <span>1023</span></div>
+                     <div style="display: flex; justify-content: space-between; font-size: 0.8rem;"><span>Start Date</span> <span>Feb 10, 2022</span></div>
+                 </div>
+                 <div style="display: flex; justify-content: space-between; align-items: center;">
+                     <span style="font-size: 0.8rem; font-weight: 600;"><i class="fas fa-chart-pie"></i> Leave Balance</span>
+                     <span style="font-size: 0.8rem;">7 Days</span>
+                 </div>
+             </div>
+        </div>
+
+    </div>
+
+    <!-- ADMIN (Placeholder style reuse) -->
+     <div id="admin" class="screen">
+        <div class="header-clean">
+            <div class="header-top">
+                <div class="header-title"><i class="fas fa-arrow-left" onclick="nav('login')"></i> Dashboard</div>
+            </div>
+            <div class="header-subtitle">Admin Portal</div>
+        </div>
+        <div class="content-area">
+            <div class="card">
+                <h3>Admin Overview</h3>
+                <p>This screen retains the existing admin functionality.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CUSTOMER (Placeholder style reuse) -->
+     <div id="customer" class="screen">
+        <div class="header-clean">
+            <div class="header-top">
+                <div class="header-title"><i class="fas fa-arrow-left" onclick="nav('login')"></i> Gabe Auto</div>
+            </div>
+        </div>
+        <div class="content-area">
+             <button class="btn-primary"><i class="fas fa-plus"></i> Book Service</button>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    function nav(id) {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('demo-menu').style.display = 'none';
+        
+        // Reset HR tabs if navigating there
+        if(id === 'hr') {
+            switchHrTab('attendance', document.querySelector('.hr-tab'));
+        }
+    }
+
+    function showDemoMenu() {
+        const menu = document.getElementById('demo-menu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function switchHrTab(tabId, el) {
+        // Headers
+        const headerTitle = document.getElementById('hr-header-title');
+        if(tabId === 'attendance') {
+            headerTitle.innerHTML = '<i class="fas fa-th-large" style="color: var(--primary);"></i> YOUR LOGO';
+        } else if (tabId === 'employees') {
+             headerTitle.innerText = 'Employees';
+        } else {
+             headerTitle.innerText = 'HR Dashboard';
+        }
+
+        // Tabs UI
+        document.querySelectorAll('.hr-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+
+        // Content
+        document.querySelectorAll('.hr-content').forEach(c => c.style.display = 'none');
+        document.getElementById('hr-' + tabId).style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

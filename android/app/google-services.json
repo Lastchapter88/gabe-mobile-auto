@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "268842721486",
+    "project_id": "gabe-mobile-auto",
+    "storage_bucket": "gabe-mobile-auto.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268842721486:android:3eb444b9a7c291863df09f",
+        "android_client_info": {
+          "package_name": "com.gabemobileauto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268842721486-o177is5v2q2vv7dsvld6id5cqabusa49.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gabemobileauto",
+            "certificate_hash": "bfb7650d2eec7bebec0f72b6a30c9f990dad476d"
+          }
+        },
+        {
+          "client_id": "268842721486-9eckct23f3m6atqibeko1ulig7vtuvuv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfH9KR6iNhiCMHJuwr14ptv0NcOk8UFJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268842721486-9eckct23f3m6atqibeko1ulig7vtuvuv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
