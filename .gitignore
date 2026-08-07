@@ -31,6 +31,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+**/build/
 /coverage/
 
 # Symbolication related
@@ -43,3 +44,42 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Node / JS (large dependency trees)
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.yarn/
+.pnp.*
+
+# Secrets & credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.mobileprovision
+credentials.json
+**/serviceAccount*.json
+**/service-account*.json
+**/google-services.json
+**/GoogleService-Info.plist
+lib/firebase_options.dart
+key.properties
+**/*.keystore
+**/*.jks
+**/secrets/
+signing_report.txt
+
+# Local build / analysis dumps
+analysis.txt
+build_log*.txt
+*.apk
+*.aab
+*.ipa
+*.app
+*.dSYM.zip
+*.symbols
